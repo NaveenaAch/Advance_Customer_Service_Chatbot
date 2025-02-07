@@ -1,9 +1,7 @@
-from email.utils import parsedate_to_datetime
 
 import openai
 import json
 import os
-
 # Set up OpenAI API key
 from dotenv import load_dotenv
 
@@ -12,6 +10,7 @@ load_dotenv()
 
 # Retrieve the API key
 api_key = os.getenv("API_KEY")
+openai.api_key = api_key
 
 def translate_to_english(text):
     """
@@ -41,7 +40,6 @@ def translate_to_english(text):
         return {"error": "Translation response was not valid JSON"}
     except Exception as e:
         return {"error": f"API Error: {str(e)}"}
-
 
 def translate_from_english(text,target_language):
     # Use a valid chat model ID and the v1/chat/completions endpoint

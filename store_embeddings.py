@@ -1,7 +1,9 @@
 import chromadb
 import uuid
 
-client = chromadb.Client()
+# client = chromadb.Client() ##actual code
+# Use persistent storage to retain data between app restarts
+client = chromadb.PersistentClient(path="./chroma_db")  # <-- Critical fix
 
 
 def store_embeddings(embeddings, metadata, chunks):
@@ -18,12 +20,6 @@ def store_embeddings(embeddings, metadata, chunks):
     except chromadb.errors.InvalidCollectionException:
         # Create the collection if it does not exist
         collection = client.create_collection("my_collection")
-
-
-
-
-
-
     # Ensure embeddings are a list of lists of floats or ints
     if not all(isinstance(embedding, list) and all(isinstance(x, (float, int)) for x in embedding) for embedding in
                embeddings):
@@ -47,8 +43,12 @@ def retrieve_similar_documents(query_embedding, top_k=5):
             collection = client.get_collection("my_collection")
 
     except chromadb.errors.InvalidCollectionException:
-            raise ValueError(
-                "Collection 'my_collection' does not exist. Please ensure it is created and populated before querying.")
+
+        print("Collection not found. Call /initialize first.")
+        return []  # Return empty list instead of raising an error
+
+        # raise ValueError(
+            #     "Collection 'my_collection' does not exist. Please ensure it is created and populated before querying.")
 
     results = collection.query(query_embeddings=[query_embedding], n_results=top_k)
 

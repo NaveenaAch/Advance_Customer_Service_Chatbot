@@ -17,7 +17,13 @@ load_dotenv()
 
 # Retrieve the API key
 api_key = os.getenv("API_KEY")
-# Define the paths of your PDF and Markdown files
+openai.api_key = api_key
+
+def initialize_system():
+    """Initialize the system by loading and processing documents once."""
+# Load documents
+documents = []
+# Define the paths of y our PDF and Markdown files
 pdf_files = [
     r'C:/Users/Asus/OneDrive/Documents/Frequently Asked Questions.pdf',
     r'C:/Users/Asus/OneDrive/Documents/ReceiveMoney.pdf',
@@ -29,10 +35,6 @@ md_files = [
     'D:/new_folder/service_fee.md',
     'D:/new_folder/westernunion.md'
 ]
-def initialize_system():
-    """Initialize the system by loading and processing documents once."""
-# Load documents
-documents = []
 
 # Load PDF files
 for pdf_file in pdf_files:
@@ -64,7 +66,6 @@ store_embeddings(all_embeddings, all_metadata, all_chunks)
 print("System initialized successfully.")
 
 print("All embeddings have been stored successfully.")
-
 
 def handle_query(query):
 

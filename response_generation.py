@@ -9,7 +9,7 @@ def generate_response(prompt):
     response = openai.ChatCompletion.create(
         model="gpt-4-turbo",  # Ensure this model ID is correct and supported
         messages=messages,
-        max_tokens=1000
+        max_tokens=11000
     )
     return response.choices[0].message['content'].strip()
 def create_prompt(context, user_query):
